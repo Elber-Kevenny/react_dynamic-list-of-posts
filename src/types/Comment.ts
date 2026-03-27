@@ -16,7 +16,7 @@ export interface Coments {
 }
 
 export interface ComentProps {
-  setComments: Comment;
+  setComments: (value: React.Dispatch<React.SetStateAction<Comment[]>>) => void;
   postId: number;
 }
 

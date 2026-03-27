@@ -13,7 +13,7 @@ export const NewCommentForm: React.FC<ComentProps> = ({
   const [isName, setIsName] = useState<boolean>(false);
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [isText, setIsText] = useState<boolean>(false);
-  const [isLoader, setIsLoader] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const resetText = () => {
     setUserText('');
@@ -43,7 +43,7 @@ export const NewCommentForm: React.FC<ComentProps> = ({
     email,
     body,
   }: Omit<Comment, 'id'>) => {
-    setIsLoader(true);
+    setIsLoading(true);
     createComment({ postId: id, name, email, body })
       .then(commentsVindoDaApi =>
         setComments(currentComments => [
@@ -51,13 +51,12 @@ export const NewCommentForm: React.FC<ComentProps> = ({
           commentsVindoDaApi,
         ]),
       )
-      .catch(error => error)
       .finally(() => {
         resetText();
         handleIsName(false);
         handleIsEmail(false);
         handleIsText(false);
-        setIsLoader(false);
+        setIsLoading(false);
       });
   };
 
@@ -213,17 +212,13 @@ export const NewCommentForm: React.FC<ComentProps> = ({
         <div className="control">
           <button
             type="submit"
-            className={classNames('button is-link', { 'is-loading': isLoader })}
+            className={classNames('button is-link', {
+              'is-loading': isLoading,
+            })}
             onClick={event => {
               handleSubmit(event);
-              handleIsName(true);
-              handleIsEmail(true);
-              handleIsText(true);
             }}
           >
-            {/* handlesubmitting no botao add deixa submting true para mostrar a danger message, mas como ele esta no botao de type
-            submit, no momento que clico submting vira true e se user, email ou text estiverem vazios no momento do clique ele
-            mostra a mensagem de danger*/}
             Add
           </button>
         </div>
