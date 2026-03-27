@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { ComentProps, Comment } from '../types/Comment';
+import { Comment, CommentProps } from '../types/Comment';
 import { createComment } from '../Api/Api';
 import classNames from 'classnames';
 
-export const NewCommentForm: React.FC<ComentProps> = ({
+export const NewCommentForm: React.FC<CommentProps> = ({
   setComments,
   postId,
+  setErrorMessage,
 }) => {
   const [userName, setUserName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
@@ -51,6 +52,8 @@ export const NewCommentForm: React.FC<ComentProps> = ({
           commentsVindoDaApi,
         ]),
       )
+
+      .catch(() => setErrorMessage('Error adding comment'))
       .finally(() => {
         resetText();
         handleIsName(false);

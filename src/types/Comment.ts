@@ -6,10 +6,10 @@ export interface Comment {
   body: string;
 }
 
-
-export interface ComentProps {
+export interface CommentProps {
   setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
   postId: number;
+  setErrorMessage: (str: string) => void;
 }
 
 export type CommentData = Pick<Comment, 'name' | 'email' | 'body'>;

@@ -8,8 +8,6 @@ export const PostsList: React.FC<PostsListProps> = ({
   onPostId,
   postId,
 }) => {
-
-
   const tableClass = 'table is-fullwidth is-striped is-hoverable is-narrow';
 
   return (

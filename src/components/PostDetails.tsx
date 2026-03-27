@@ -24,6 +24,7 @@ export const PostDetails: React.FC<Posts> = ({ posts, postId, userId }) => {
     if (!postId) {
       return;
     }
+
     getComment({ postId })
       .then(commentApi => {
         setComments(commentApi);
@@ -33,14 +34,11 @@ export const PostDetails: React.FC<Posts> = ({ posts, postId, userId }) => {
   }, [postId]);
 
   const handleDeleteComment = (id: number) => {
-    const updateComments = comments.filter((c) => c.id !== id)
-    setComments(updateComments)
-    deleteComment(id)
-      .then(() =>
-        setComments(currentComments =>
-          currentComments.filter(c => c.id !== id),
-        ),
-      )
+    const updateComments = comments.filter(c => c.id !== id);
+
+    setComments(updateComments);
+    /* eslint-disable @typescript-eslint/indent */
+    deleteComment(id).catch(() => setErrorMessage('error in comment'));
   };
 
   return (
@@ -125,7 +123,7 @@ export const PostDetails: React.FC<Posts> = ({ posts, postId, userId }) => {
           }
 
           {isShowForm && (
-            <NewCommentForm setComments={setComments} postId={postId} />
+            <NewCommentForm setErrorMessage={setErrorMessage} setComments={setComments} postId={postId} />
           )}
         </div>
       </div>

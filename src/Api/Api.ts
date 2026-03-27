@@ -13,7 +13,7 @@ export const getPost = ({ userId }: Omit<Post, 'id' | 'title' | 'body'>) => {
   return client.get<Post[]>(`/posts?userId=${userId}`);
 };
 
-export const getComment = ({ postId}: Pick<Comment, 'postId'>) => {
+export const getComment = ({ postId }: Pick<Comment, 'postId'>) => {
   return client.get<Comment[]>(`/comments?postId=${postId}`);
 };
 

@@ -43,6 +43,7 @@ export const App = () => {
     setErrorMessage('');
     if (!userId) {
       setPost([]);
+      setIsLoading(false);
 
       return;
     }
@@ -71,7 +72,7 @@ export const App = () => {
     setPostId(id);
   };
 
-  const selecteUser = users.find(u => u.id === userId);
+  const selectedUser = users.find(u => u.id === userId);
 
   return (
     <>
@@ -93,7 +94,7 @@ export const App = () => {
 
                 <div className="block" data-cy="MainContent">
                   <p data-cy="NoSelectedUser">
-                    {selecteUser ? '' : 'No user selected'}
+                    {selectedUser ? '' : 'No user selected'}
                   </p>
 
                   {isLoading && userId > 0 && <Loader />}
@@ -110,7 +111,8 @@ export const App = () => {
                     /* eslint-disable @typescript-eslint/indent */ !isLoading &&
                       post.length === 0 &&
                       !havePost &&
-                      errorMessage.length === 0 && (
+                      errorMessage.length === 0 &&
+                      userId > 0 && (
                         <div
                           className="notification is-warning"
                           data-cy="NoPostsYet"
