@@ -6,6 +6,6 @@
   "compilerOptions": {
     "sourceMap": false,
     "types": ["node", "cypress"],
-    "jsx": "react-jsx", // ESTA É A LINHA QUE RESOLVE O ERRO
+    "jsx": "react-jsx",
   }
 }

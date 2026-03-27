@@ -9,17 +9,17 @@ import { PostDetails } from './components/PostDetails';
 import { UserSelector } from './components/UserSelector';
 import { Loader } from './components/Loader';
 import { useEffect, useState } from 'react';
-import { Users } from './types/User';
 import { getPost, getUser } from './Api/Api';
 import { Post } from './types/Post';
+import { User } from './types/User';
 
 export const App = () => {
-  const [users, setUser] = useState<Users[]>([]);
+  const [users, setUser] = useState<User[]>([]);
   const [userId, setUserId] = useState<number>(0);
   const [isShowUsers, setIsShowUsers] = useState<boolean>(false);
   const [post, setPost] = useState<Post[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [isLoader, setIsLoader] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [postId, setPostId] = useState<number>();
 
@@ -31,16 +31,15 @@ export const App = () => {
     post.length === 0 ? false : post.every(p => p.userId === userId);
 
   useEffect(() => {
-    // useeffect, mostra os usuarios solicitados a Api na hora que a pagina carrega, pois os [] estao vazios
     getUser()
       .then(userVindoDaApi => {
         setUser(userVindoDaApi);
       })
-      .catch(error => error);
+      .catch(() => setErrorMessage('Error loading user.'));
   }, []);
 
   useEffect(() => {
-    setIsLoader(true);
+    setIsLoading(true);
     setErrorMessage('');
     if (!userId) {
       setPost([]);
@@ -55,7 +54,7 @@ export const App = () => {
       .catch(() => setErrorMessage('Something went wrong!'))
 
       .finally(() => {
-        setIsLoader(false);
+        setIsLoading(false);
         handleShowSidebar(false);
       });
   }, [userId]);
@@ -73,8 +72,6 @@ export const App = () => {
   };
 
   const selecteUser = users.find(u => u.id === userId);
-
-  const ttt = post.filter(p => p.userId === userId);
 
   return (
     <>
@@ -99,7 +96,7 @@ export const App = () => {
                     {selecteUser ? '' : 'No user selected'}
                   </p>
 
-                  {isLoader && userId > 0 && <Loader />}
+                  {isLoading && userId > 0 && <Loader />}
 
                   {errorMessage.length !== 0 && (
                     <div
@@ -110,7 +107,7 @@ export const App = () => {
                     </div>
                   )}
                   {
-                    /* eslint-disable @typescript-eslint/indent */ !isLoader &&
+                    /* eslint-disable @typescript-eslint/indent */ !isLoading &&
                       post.length === 0 &&
                       !havePost &&
                       errorMessage.length === 0 && (
@@ -123,7 +120,7 @@ export const App = () => {
                       )
                   }
 
-                  {!isLoader && post.length > 0 && (
+                  {!isLoading && post.length > 0 && (
                     <PostsList
                       posts={post}
                       userId={userId}
@@ -143,7 +140,7 @@ export const App = () => {
                 'is-parent',
                 'is-8-desktop',
                 'Sidebar',
-                { 'Sidebar--open': isOpen && ttt.length > 0 },
+                { 'Sidebar--open': isOpen && post.length > 0 },
               )}
             >
               {isOpen && (

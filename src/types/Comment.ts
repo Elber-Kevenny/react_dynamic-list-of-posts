@@ -6,17 +6,9 @@ export interface Comment {
   body: string;
 }
 
-export interface Coments {
-  comment: Comment[];
-  id: number;
-  postId: number;
-  name: string;
-  email: string;
-  body: string;
-}
 
 export interface ComentProps {
-  setComments: (value: React.Dispatch<React.SetStateAction<Comment[]>>) => void;
+  setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
   postId: number;
 }
 

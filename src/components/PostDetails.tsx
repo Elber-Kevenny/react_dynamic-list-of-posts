@@ -3,12 +3,12 @@ import { Loader } from './Loader';
 import { NewCommentForm } from './NewCommentForm';
 import { Posts } from '../types/Post';
 import { deleteComment, getComment } from '../Api/Api';
-import { Coments } from '../types/Comment';
+import { Comment } from '../types/Comment';
 
 export const PostDetails: React.FC<Posts> = ({ posts, postId, userId }) => {
-  const [comments, setComments] = useState<Coments[]>([]);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [isLoader, setIsLoader] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isShowForm, setIsShowForm] = useState<boolean>(false);
   const selectedPost = posts.find(p => p.id === postId);
 
@@ -18,25 +18,29 @@ export const PostDetails: React.FC<Posts> = ({ posts, postId, userId }) => {
 
   useEffect(() => {
     setComments([]);
-    setIsLoader(true);
+    setIsLoading(true);
     handleShowForm(false);
     setErrorMessage('');
+    if (!postId) {
+      return;
+    }
     getComment({ postId })
       .then(commentApi => {
         setComments(commentApi);
       })
       .catch(() => setErrorMessage('Something went wrong'))
-      .finally(() => setIsLoader(false));
+      .finally(() => setIsLoading(false));
   }, [postId]);
 
-  const handleDeleteComment = id => {
+  const handleDeleteComment = (id: number) => {
+    const updateComments = comments.filter((c) => c.id !== id)
+    setComments(updateComments)
     deleteComment(id)
       .then(() =>
         setComments(currentComments =>
           currentComments.filter(c => c.id !== id),
         ),
       )
-      .catch(error => error);
   };
 
   return (
@@ -53,7 +57,7 @@ export const PostDetails: React.FC<Posts> = ({ posts, postId, userId }) => {
 
           {
             <div className="block">
-              {isLoader && <Loader />}
+              {isLoading && <Loader />}
 
               {errorMessage && (
                 <div className="notification is-danger" data-cy="CommentsError">
@@ -65,7 +69,7 @@ export const PostDetails: React.FC<Posts> = ({ posts, postId, userId }) => {
                 /* eslint-disable
                 @typescript-eslint/indent */ comments.length === 0 &&
                   postId > 0 &&
-                  !isLoader &&
+                  !isLoading &&
                   errorMessage.length === 0 && (
                     <p className="title is-4" data-cy="NoCommentsMessage">
                       No comments yet
@@ -73,11 +77,11 @@ export const PostDetails: React.FC<Posts> = ({ posts, postId, userId }) => {
                   )
               }
 
-              {comments.length > 0 && !isLoader && (
+              {comments.length > 0 && !isLoading && (
                 <p className="title is-4">Comments:</p>
               )}
 
-              {!isLoader && userId === selectedPost?.userId && (
+              {!isLoading && userId === selectedPost?.userId && (
                 <>
                   {comments.map(c => (
                     <article

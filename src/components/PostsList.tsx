@@ -1,20 +1,20 @@
 import React from 'react';
-import { Posts } from '../types/Post';
+import { PostsListProps } from '../types/Post';
 
-export const PostsList: React.FC<Posts> = ({
+export const PostsList: React.FC<PostsListProps> = ({
   posts,
   userId,
   showSideBar,
   onPostId,
   postId,
 }) => {
-  const postSelected = posts.filter(p => p.userId === userId);
+
 
   const tableClass = 'table is-fullwidth is-striped is-hoverable is-narrow';
 
   return (
     <>
-      {userId > 0 && postSelected.length > 0 && (
+      {userId > 0 && posts.length > 0 && (
         <div data-cy="PostsList">
           <p className="title">Posts:</p>
 
@@ -29,7 +29,7 @@ export const PostsList: React.FC<Posts> = ({
             </thead>
             <tbody>
               <></>
-              {postSelected.map(p => (
+              {posts.map(p => (
                 <tr data-cy="Post" key={p.id}>
                   <td data-cy="PostId">{p.id}</td>
 

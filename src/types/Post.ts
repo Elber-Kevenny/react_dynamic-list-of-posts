@@ -5,14 +5,15 @@ export interface Post {
   body: string;
 }
 
-export interface GetPost {
-  userId: number;
-}
-
 export interface Posts {
   posts: Post[];
-  showSideBar: () => void;
-  isShowClose: boolean;
+  userId: number;
+  postId: number;
+}
+
+export interface PostsListProps {
+  posts: Post[];
+  showSideBar: (isOpen: boolean) => void;
   userId: number;
   onPostId: (id: number) => void;
   postId: number;

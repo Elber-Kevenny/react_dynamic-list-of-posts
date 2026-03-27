@@ -11,4 +11,5 @@ export interface Users {
   showUser: boolean;
   onUserId: (id: number) => void;
   userId: number;
+  setIsShowUsers: React.Dispatch<React.SetStateAction<boolean>>;
 }

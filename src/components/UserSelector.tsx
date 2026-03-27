@@ -10,12 +10,12 @@ export const UserSelector: React.FC<Users> = ({
   userId,
   setIsShowUsers,
 }) => {
-  const selecteUser = users.find(u => u.id === userId);
+  const selectedUser = users.find(u => u.id === userId);
   const menuRef = useRef<HTMLDivElement>(null);
 
   /* eslint-disable @typescript-eslint/indent */
   useEffect(() => {
-    function handleClickOutside(event) {
+    function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsShowUsers(false);
       }
@@ -42,7 +42,7 @@ export const UserSelector: React.FC<Users> = ({
           aria-controls="dropdown-menu"
           onClick={onListUser}
         >
-          <span>{selecteUser ? selecteUser.name : 'Choose a user'}</span>
+          <span>{selectedUser ? selectedUser.name : 'Choose a user'}</span>
 
           <span className="icon is-small">
             <i className="fas fa-angle-down" aria-hidden="true" />
@@ -54,7 +54,7 @@ export const UserSelector: React.FC<Users> = ({
         <div className="dropdown-content">
           {users.map(
             (
-              u, // se lembre que quando usar {} deve utilizar return, com parenteses é retorno implicito
+              u,
             ) => (
               <a
                 href={`#user-${u.id}`}
